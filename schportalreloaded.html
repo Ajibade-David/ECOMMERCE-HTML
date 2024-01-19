@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details</title>
+</head>
+
+<body>
+    <!-- Input fields for student name and price -->
+    <input type="text" placeholder="Name" id="studentName">
+    <input type="number" placeholder="Price" id="studentPrice">
+
+    <!-- Buttons for submitting and editing student details -->
+    <button onclick="submitStudentDetails()">Submit</button>
+    <button onclick="editStudentDetails()">Edit</button>
+
+    <!-- Display area for student details -->
+    <div id="studentDetailsDisplay"></div>
+
+    <script>
+        var studentList = [];
+        var counter = 1;
+
+        function submitStudentDetails() {
+            // Get values from input fields
+            var name = document.getElementById('studentName').value;
+            var price = document.getElementById('studentPrice').value;
+
+            // Create an object with student details
+            var studentObj = {
+                name: name,
+                price: price
+            };
+
+            // Add the student object to the list
+            studentList.push(studentObj);
+
+            // Display the student details
+            displayStudentDetails(studentObj);
+
+            // Increment counter
+            counter++;
+        }
+
+        function displayStudentDetails(studentObj) {
+            // Display student details along with the student number
+            var displayArea = document.getElementById('studentDetailsDisplay');
+            var detailsText = counter + '. Name: ' + studentObj.name + ', Price: ' + studentObj.price;
+            displayArea.innerHTML += '<p>' + detailsText + '</p>';
+        }
+
+        function editStudentDetails() {
+            // Get the index and new price from the user
+            var indexToEdit = prompt("Enter the index to edit:");
+            var newPrice = prompt("Enter the new price:");
+
+            // Validate input
+            if (indexToEdit && newPrice && !isNaN(indexToEdit) && !isNaN(newPrice)) {
+                // Convert inputs to integers
+                var newIndex = parseInt(indexToEdit);
+                var newPriceInt = parseInt(newPrice);
+
+                // Check if the index is valid
+                if (newIndex > 0 && newIndex <= studentList.length) {
+                    // Update the price using splice
+                    studentList.splice(newIndex - 1, 1, { name: studentList[newIndex - 1].name, price: newPriceInt });
+
+                    // Update the display
+                    updateDisplay();
+                } else {
+                    alert("Invalid index. Please enter a valid index.");
+                }
+            } else {
+                alert("Invalid input. Please enter valid index and price.");
+            }
+        }
+
+        function updateDisplay() {
+            // Clear the display area
+            var displayArea = document.getElementById('studentDetailsDisplay');
+            displayArea.innerHTML = '';
+
+            // Display each student's details
+            for (var i = 0; i < studentList.length; i++) {
+                var detailsText = (i + 1) + '. Name: ' + studentList[i].name + ', Price: ' + studentList[i].price;
+                displayArea.innerHTML += '<p>' + detailsText + '</p>';
+            }
+        }
+    </script>
+</body>
+
+</html>
